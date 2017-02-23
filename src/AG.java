@@ -37,6 +37,24 @@ public class AG {
 		pop_aux_index = pop_aux_index + 2;
 	}
 	
+	void mutacao()
+	{
+		int quem = new Random().nextInt(POP_TAM);
+		int gene = new Random().nextInt(POP_GENE);
+		
+		POP_AUX[quem][gene] = (POP_AUX[quem][gene] == 0)? 1: 0;
+		
+	}
+	
+	void substituicao()
+	{
+		int i, g;
+		for(i = 0; i < POP_TAM; i++)
+			for(g = 0; g < POP_GENE; g++)
+				POP[i][g] = POP_AUX[i][g];
+	
+	}
+	
 	void mostra_pop()
 	{
 		int i, j;
