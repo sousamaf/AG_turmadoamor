@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class AG {
 	int geracao = 0;
+	float carga = 2.0f;
 	
 	int pop_aux_index = 0;
 	
@@ -10,6 +11,21 @@ public class AG {
 	
 	int[][] POP = new int[POP_TAM][POP_GENE];
 	int[][] POP_AUX = new int[POP_TAM][POP_GENE];
+	
+	float[] fitness = new float[POP_TAM];
+	float[] fitness_porcentagem = new float[POP_TAM];
+	
+	float[] livros = new float[POP_GENE];
+	
+	void ag()
+	{
+		livros[0] = 0.3f;
+		livros[1] = 1.3f;
+		livros[2] = 0.7f;
+		livros[3] = 1.1f;
+		livros[4] = 0.5f;
+		livros[5] = 0.9f;
+	}
 	
 	void populacao_inicial()
 	{
@@ -55,6 +71,11 @@ public class AG {
 	
 	}
 	
+	void avaliacao()
+	{
+		
+	}
+	
 	void mostra_pop()
 	{
 		int i, j;
@@ -86,10 +107,16 @@ public class AG {
 	
 	public static void main(String[] args)
 	{
+		int T = 30;
 		AG ag = new AG();
+		
 		ag.populacao_inicial();
-		ag.mostra_pop();
-		ag.cruzamento_simples_um_ponto(18, 19);
-		ag.mostra_pop_aux();
+		
+		while(ag.geracao < T)
+		{
+			ag.avaliacao();
+			
+			ag.geracao++;
+		}
 	}
 }
