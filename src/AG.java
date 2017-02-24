@@ -15,16 +15,24 @@ public class AG {
 	float[] fitness = new float[POP_TAM];
 	float[] fitness_porcentagem = new float[POP_TAM];
 	
-	float[] livros = new float[POP_GENE];
+	public float[] livros = new float[POP_GENE];
 	
-	void ag()
+	public AG()
 	{
-		livros[0] = 0.3f;
-		livros[1] = 1.3f;
-		livros[2] = 0.7f;
-		livros[3] = 1.1f;
-		livros[4] = 0.5f;
-		livros[5] = 0.9f;
+		int i;
+		
+		this.livros[0] = 0.3f;
+		this.livros[1] = 1.3f;
+		this.livros[2] = 0.7f;
+		this.livros[3] = 1.1f;
+		this.livros[4] = 0.5f;
+		this.livros[5] = 0.9f;
+		
+		for(i = 0; i < POP_TAM; i++)
+		{
+			this.fitness[i] = 0.0f;
+			this.fitness_porcentagem[i] = 0.0f;
+		}
 	}
 	
 	void populacao_inicial()
@@ -73,7 +81,48 @@ public class AG {
 	
 	void avaliacao()
 	{
+		int i, g;
+		for(i = 0; i < POP_TAM; i++)
+		{
+			for(g = 0; g < POP_GENE; g++)
+			{
+				fitness[i] += livros[g] * POP[i][g];
+			}
+			if(fitness[i] > carga)
+			{
+				fitness[i] = 0.0f;
+			}
+		}
+	}
+	
+	void avaliacao_porcentagem()
+	{
+		int i;
+		float fitness_total = 0.0f;
 		
+		for(i = 0; i < POP_TAM; i++)
+		{
+			fitness_total += fitness[i];
+		}
+		
+		for(i = 0; i < POP_TAM; i++)
+		{
+			fitness_porcentagem[i] = (fitness[i] * 100)/fitness_total;
+		}
+	}
+	
+	int roleta()
+	{
+		float soma = 0.0f;
+		int i = -1;
+		int num = new Random().nextInt(100);
+		
+		while(num > soma)
+		{
+			i++;
+			soma += fitness_porcentagem[i];
+		}
+		return i;
 	}
 	
 	void mostra_pop()
@@ -107,14 +156,27 @@ public class AG {
 	
 	public static void main(String[] args)
 	{
-		int T = 30;
+		int T = 1;
+		int pai1, pai2;
+		
 		AG ag = new AG();
 		
-		ag.populacao_inicial();
 		
+		ag.populacao_inicial();
+		ag.mostra_pop();
+
 		while(ag.geracao < T)
 		{
 			ag.avaliacao();
+			ag.avaliacao_porcentagem();
+			
+				pai1 = ag.roleta();
+				pai2 = ag.roleta();
+				
+				while(pai1 == pai2)
+					pai2 = ag.roleta();
+				
+				ag.cruzamento_simples_um_ponto(pai1, pai2);
 			
 			ag.geracao++;
 		}
