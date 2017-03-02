@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class AG {
-	int T = 1; // numero de geracoes populacionais do criterio de parada
+	int T = 10; // numero de geracoes populacionais do criterio de parada
 	final int TAXA_MUTACAO = 5;
 	
 	int geracao = 0;
@@ -88,6 +88,7 @@ public class AG {
 		int i, g;
 		for(i = 0; i < POP_TAM; i++)
 		{
+			fitness[i] = 0.0f;
 			for(g = 0; g < POP_GENE; g++)
 			{
 				fitness[i] += livros[g] * POP[i][g];
@@ -182,9 +183,6 @@ public class AG {
 			System.out.print(POP[iMelhor][g] + " ");
 		}
 		System.out.println("] = " + melhor);
-		
-
-		
 	}
 
 	
@@ -199,11 +197,12 @@ public class AG {
 		
 		int i = 0;
 		ag.populacao_inicial();
-		ag.mostra_pop();
+		//ag.mostra_pop();
 
 		while(ag.geracao < ag.T)
 		{
 			ag.avaliacao();
+			ag.melhor_individuo();
 			
 			ag.avaliacao_porcentagem();
 			
