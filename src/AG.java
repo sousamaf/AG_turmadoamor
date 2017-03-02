@@ -1,7 +1,11 @@
 import java.util.Random;
 
 public class AG {
+	int T = 1; // numero de geracoes populacionais do criterio de parada
+	final int TAXA_MUTACAO = 5;
+	
 	int geracao = 0;
+	
 	float carga = 2.0f;
 	
 	int pop_aux_index = 0;
@@ -122,6 +126,8 @@ public class AG {
 			i++;
 			soma += fitness_porcentagem[i];
 		}
+		if( i < 0 )
+			i = 0;
 		return i;
 	}
 	
@@ -153,23 +159,56 @@ public class AG {
 		}
 	}
 
+	void melhor_individuo()
+	{
+		int i, g, iMelhor;
+		float melhor = 0.0f;
+		
+		melhor = fitness[0];
+		iMelhor = 0;
+		
+		for(i = 1; i < POP_TAM; i++)
+		{
+			if(fitness[i] > melhor)
+			{
+				melhor = fitness[i];
+				iMelhor = i;
+			}
+		}
+
+		System.out.print("Melhor: " + " [ ");
+		for(g = 0; g < POP_GENE; g++)
+		{
+			System.out.print(POP[iMelhor][g] + " ");
+		}
+		System.out.println("] = " + melhor);
+		
+
+		
+	}
+
 	
 	public static void main(String[] args)
 	{
-		int T = 1;
+		
 		int pai1, pai2;
 		
 		AG ag = new AG();
 		
+		int tx_mutacao = (ag.POP_TAM * ag.TAXA_MUTACAO)/100;
 		
+		int i = 0;
 		ag.populacao_inicial();
 		ag.mostra_pop();
 
-		while(ag.geracao < T)
+		while(ag.geracao < ag.T)
 		{
 			ag.avaliacao();
+			
 			ag.avaliacao_porcentagem();
 			
+			while(ag.pop_aux_index < ag.POP_TAM)
+			{
 				pai1 = ag.roleta();
 				pai2 = ag.roleta();
 				
@@ -177,8 +216,17 @@ public class AG {
 					pai2 = ag.roleta();
 				
 				ag.cruzamento_simples_um_ponto(pai1, pai2);
+			}
 			
+			while(i <= tx_mutacao)
+			{
+				ag.mutacao();
+				i++;
+			}
+			
+			ag.substituicao();
 			ag.geracao++;
+			ag.pop_aux_index = 0;
 		}
 	}
 }
