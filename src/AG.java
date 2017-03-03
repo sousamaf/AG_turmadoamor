@@ -64,6 +64,26 @@ public class AG {
 		}
 		pop_aux_index = pop_aux_index + 2;
 	}
+
+	void cruzamento_uniforme(int pai1, int pai2)
+	{
+		int g;
+		
+		for(g = 0; g < POP_GENE; g++)
+		{
+			if(new Random().nextInt(2) == 0)
+			{
+				POP_AUX[pop_aux_index][g]	= POP[pai1][g];
+				POP_AUX[pop_aux_index+1][g]	= POP[pai2][g];
+			} else
+			{
+				POP_AUX[pop_aux_index][g]	= POP[pai2][g];
+				POP_AUX[pop_aux_index+1][g]	= POP[pai1][g];
+			}
+		}
+		pop_aux_index = pop_aux_index + 2;
+	}
+
 	
 	void mutacao()
 	{
@@ -214,7 +234,11 @@ public class AG {
 				while(pai1 == pai2)
 					pai2 = ag.roleta();
 				
-				ag.cruzamento_simples_um_ponto(pai1, pai2);
+				if(new Random().nextInt(2) == 0)
+					ag.cruzamento_simples_um_ponto(pai1, pai2);
+				else
+					ag.cruzamento_uniforme(pai1, pai2);
+				
 			}
 			
 			while(i <= tx_mutacao)
