@@ -6,12 +6,12 @@ public class AG {
 	
 	int geracao = 0;
 	
-	float carga = 2.0f;
+	float carga = 4.0f;
 	
 	int pop_aux_index = 0;
 	
-	final int POP_TAM = 20;
-	final int POP_GENE = 6;
+	final int POP_TAM = 50;
+	final int POP_GENE = 15;
 	
 	int[][] POP = new int[POP_TAM][POP_GENE];
 	int[][] POP_AUX = new int[POP_TAM][POP_GENE];
@@ -30,7 +30,17 @@ public class AG {
 		this.livros[2] = 0.7f;
 		this.livros[3] = 1.1f;
 		this.livros[4] = 0.5f;
-		this.livros[5] = 0.9f;
+		this.livros[5] = 0.2f;
+		this.livros[6] = 0.5f;
+		this.livros[7] = 0.4f;
+		this.livros[8] = 0.1f;
+		this.livros[9] = 1.2f;
+		this.livros[10] = 1.3f;
+		this.livros[11] = 0.7f;
+		this.livros[12] = 0.8f;
+		this.livros[13] = 0.6f;
+		this.livros[14] = 0.2f;
+		
 		
 		for(i = 0; i < POP_TAM; i++)
 		{
@@ -197,7 +207,7 @@ public class AG {
 			}
 		}
 
-		System.out.print("Melhor: " + " [ ");
+		System.out.print("G: " + geracao + " Melhor: " + " [ ");
 		for(g = 0; g < POP_GENE; g++)
 		{
 			System.out.print(POP[iMelhor][g] + " ");
@@ -238,7 +248,6 @@ public class AG {
 					ag.cruzamento_simples_um_ponto(pai1, pai2);
 				else
 					ag.cruzamento_uniforme(pai1, pai2);
-				
 			}
 			
 			while(i <= tx_mutacao)
